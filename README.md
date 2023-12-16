@@ -6,7 +6,7 @@ Basskt is an API of bindings for the BASS library on Android with the goal to si
 Originally intended to be a module in the [rimu! project](https://github.com/Reco1I/rimu).
 
 ## Usage
-In order to use this library in your project you add the dependency in your app's module `build.gradle`.
+In order to use this library in your project you need to add the dependency in your app's module `build.gradle`.
 ```kts
 dependencies {
     implementation("com.github.Reco1I:Basskt:1.0.1")
