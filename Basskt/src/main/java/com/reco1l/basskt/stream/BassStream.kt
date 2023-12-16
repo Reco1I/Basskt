@@ -152,7 +152,7 @@ abstract class BaseStream(source: String? = null)
         }
         get()
         {
-            val bytes = BASS.BASS_ChannelGetPosition(id, BASS.BASS_POS_BYTE)
+            val bytes = BASS.BASS_ChannelGetPosition(id, BASS.BASS_POS_DECODE)
 
             return BASS.BASS_ChannelBytes2Seconds(id, bytes).toLong() * 1000L
         }
