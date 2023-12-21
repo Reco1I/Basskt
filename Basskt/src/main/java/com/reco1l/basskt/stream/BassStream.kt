@@ -209,9 +209,9 @@ abstract class BaseStream(source: String? = null)
         {
             // Removing in case the callback is set to null
             if (value == null)
-                setSync(BASS.BASS_SYNC_END)
+                addSynchronizer(BASS.BASS_SYNC_END)
             else
-                setSync(BASS.BASS_SYNC_END) { value() }
+                addSynchronizer(BASS.BASS_SYNC_END) { value() }
 
             field = value
         }
@@ -352,15 +352,17 @@ abstract class BaseStream(source: String? = null)
     /**
      * Binding for [BASS.BASS_ChannelSetSync]
      */
-    fun setSync(type: Int, param: Long = 0, sync: ((data: Int) -> Unit)? = null): Int
+    fun addSynchronizer(type: Int, param: Long = 0, sync: ((data: Int) -> Unit)? = null): Int
     {
         // If the sync procedure is null we remove the previous callback
         if (sync == null)
-            return BASS.BASS_ChannelSetSync(id, type, param, null, null)
+            return -1
 
         // Otherwise we overwrite
         return BASS.BASS_ChannelSetSync(id, type, param, { _, _, data, _ -> sync(data) }, null)
     }
+
+    fun removeSynchronizer(sync: Int) = BASS.BASS_ChannelRemoveSync(id, sync)
 
 
     override fun equals(other: Any?) = other === this || other is BaseStream
