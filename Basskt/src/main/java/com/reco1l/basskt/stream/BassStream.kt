@@ -207,17 +207,23 @@ abstract class BaseStream(source: String? = null)
     var onStreamEnd: (() -> Unit)? = null
         set(value)
         {
-            // Removing in case the callback is set to null
-            if (value == null)
-                addSynchronizer(BASS.BASS_SYNC_END)
-            else
-                addSynchronizer(BASS.BASS_SYNC_END) { value() }
+            if (field == value)
+                return
+
+            // Removing previous synchronizer if it exists.
+            if (onStreamEndSynchronizerID != -1)
+                removeSynchronizer(onStreamEndSynchronizerID)
+
+            if (value != null)
+                onStreamEndSynchronizerID = addSynchronizer(BASS.BASS_SYNC_END) { value() }
 
             field = value
         }
 
 
     // Private
+
+    private var onStreamEndSynchronizerID = -1
 
     private var isMuffleEqualizerInitialized = false
 
